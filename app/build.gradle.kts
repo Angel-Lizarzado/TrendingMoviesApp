@@ -80,6 +80,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 
+    implementation("androidx.compose.material:material:1.5.0") // para que funcione varias propiedades de Jetpack Compose
+
+
 
 
 

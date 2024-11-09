@@ -13,6 +13,7 @@ import com.example.trendingmoviesapp.ui.ApiKeyScreen
 import com.example.trendingmoviesapp.ui.MainScreen
 import com.example.trendingmoviesapp.ui.DetailScreen
 import com.example.trendingmoviesapp.viewmodel.AppViewModel
+//import com.example.trendingmoviesapp.viewmodel.PreviewAppViewModel
 
 @Composable
 fun AppNavigation(onApiKeySaved: (String) -> Unit) {
@@ -45,11 +46,14 @@ fun AppNavigation(onApiKeySaved: (String) -> Unit) {
         // Pantalla principal donde se listan las películas
         composable(route = AppScreens.MainScreen.route) {
             MainScreen(appViewModel = appViewModel, navController = navController)
+            //MainScreen(appViewModel = PreviewAppViewModel(), navController = navController)
         }
 
         // Pantalla de detalles de una película
         composable(route = AppScreens.DetailScreen.route) {
             DetailScreen(appViewModel = appViewModel, navController = navController)
+            //DetailScreen(appViewModel = PreviewAppViewModel(), navController = navController)
+
         }
     }
 }
