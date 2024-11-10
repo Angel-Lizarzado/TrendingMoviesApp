@@ -9,4 +9,7 @@ interface TmdbApiService {
 
     @GET("person/popular")
     suspend fun getPopularPersons(): Response<MovieResponse>
+
+    @GET("search/movie")
+    suspend fun searchMovie(@Query("api_key") apiKey: String, @Query("query") searchVxalue:String) : Response<MovieResponse>
 }

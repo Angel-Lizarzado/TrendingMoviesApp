@@ -10,19 +10,22 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.trendingmoviesapp.theme.Typography
 
 private val DarkColorScheme = darkColorScheme(
     primary = com.example.trendingmoviesapp.theme.Purple80,
     secondary = com.example.trendingmoviesapp.theme.PurpleGrey80,
-    tertiary = com.example.trendingmoviesapp.theme.Pink80
+    tertiary = com.example.trendingmoviesapp.theme.Pink80,
+
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = com.example.trendingmoviesapp.theme.Purple40,
     secondary = com.example.trendingmoviesapp.theme.PurpleGrey40,
-    tertiary = com.example.trendingmoviesapp.theme.Pink40
+    tertiary = com.example.trendingmoviesapp.theme.Pink40,
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

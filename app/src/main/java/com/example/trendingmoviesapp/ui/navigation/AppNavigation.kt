@@ -9,10 +9,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.trendingmoviesapp.theme.TrendingMoviesAppTheme
 import com.example.trendingmoviesapp.ui.ApiKeyScreen
 import com.example.trendingmoviesapp.ui.MainScreen
 import com.example.trendingmoviesapp.ui.DetailScreen
 import com.example.trendingmoviesapp.viewmodel.AppViewModel
+//import com.example.trendingmoviesapp.viewmodel.PreviewAppViewModel
 
 @Composable
 fun AppNavigation(onApiKeySaved: (String) -> Unit) {
@@ -24,6 +26,7 @@ fun AppNavigation(onApiKeySaved: (String) -> Unit) {
     val navController = rememberNavController()
 
     // Contenedor de las diferentes pantallas de la app
+    // Contenedor de las diferentes pantallas de la app
     NavHost(
         navController = navController,
         startDestination = if (apiKey.isNullOrEmpty()) AppScreens.ApiKeyScreen.route else AppScreens.MainScreen.route,
@@ -33,7 +36,6 @@ fun AppNavigation(onApiKeySaved: (String) -> Unit) {
         // Pantalla de ingreso de API Key
         composable(route = AppScreens.ApiKeyScreen.route) {
             ApiKeyScreen(onApiKeySaved = { key ->
-                // Guardamos la API Key en el ViewModel y en MainActivity
                 appViewModel.setApiKey(key)
                 onApiKeySaved(key) // Guardar en SharedPreferences desde MainActivity
                 navController.navigate(AppScreens.MainScreen.route) {
@@ -44,12 +46,16 @@ fun AppNavigation(onApiKeySaved: (String) -> Unit) {
 
         // Pantalla principal donde se listan las películas
         composable(route = AppScreens.MainScreen.route) {
-            MainScreen(appViewModel = appViewModel, navController = navController)
+            TrendingMoviesAppTheme(darkTheme = appViewModel.isDarkTheme.value) {
+                MainScreen(appViewModel = appViewModel, navController = navController)
+            }
         }
 
         // Pantalla de detalles de una película
         composable(route = AppScreens.DetailScreen.route) {
-            DetailScreen(appViewModel = appViewModel, navController = navController)
+            TrendingMoviesAppTheme(darkTheme = appViewModel.isDarkTheme.value) {
+                DetailScreen(appViewModel = appViewModel, navController = navController)
+            }
         }
     }
 }

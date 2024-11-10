@@ -3,20 +3,14 @@ package com.example.trendingmoviesapp.viewmodel
 import MovieResponse
 import TmdbApiService
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trendingmoviesapp.model.Movie
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
 
 class AppViewModel : ViewModel() {
 
@@ -32,6 +26,14 @@ class AppViewModel : ViewModel() {
         Log.d("AppViewModel", "Setting API Key: $key")
         _apiKey.value = key
         fetchMovies() // Llama a fetchMovies cuando se establece una nueva API Key
+    }
+
+    // Guardamos el tema oscuro en el ViewModel, cambiando a StateFlow
+    private val _isDarkTheme = MutableStateFlow(false)
+    val isDarkTheme: StateFlow<Boolean> = _isDarkTheme.asStateFlow()
+
+    fun setDarkTheme(isDark: Boolean) {
+        _isDarkTheme.value = isDark
     }
 
     // Lista de películas que se puede modificar
@@ -127,5 +129,40 @@ class AppViewModel : ViewModel() {
                 Log.e("AppViewModel", errorMessage, e)
             }
         }
+    }
+
+    fun searchMovie(searchValue: String, searchInProgress: MutableState<Boolean>) {
+        searchInProgress.value = true
+        Log.d("AppViewModel", "Searching movies...")
+        viewModelScope.launch {
+            try {
+                // Asegúrate de que apiKey.value no sea nulo o vacío
+                val currentApiKey = apiKey.value
+                if (currentApiKey.isNullOrEmpty()) {
+                    errorMessage = "API Key is missing"
+                    Log.e("AppViewModel", errorMessage ?: "Unknown error")
+                    return@launch
+                }
+                val response = apiService.searchMovie(currentApiKey, searchValue)
+                if (response.isSuccessful) {
+                    Log.d("AppViewModel", "Response body: ${response.body()}")
+                    clearMoviesList() // Limpia la lista antes de agregar nuevas películas
+                    moviesListAddAll(response.body()?.results ?: emptyList())
+                    errorMessage = null // Limpia el mensaje de error
+                    Log.d("AppViewModel", "Fetched ${moviesList.size} movies.")
+                } else {
+                    errorMessage = "Error: ${response.errorBody()?.string()}"
+                    Log.e("AppViewModel", errorMessage ?: "Unknown error")
+                }
+
+            } catch (e: Exception) {
+                errorMessage = "Exception fetching movies: ${e.message}"
+                Log.e("AppViewModel", errorMessage, e)
+            } finally {
+                searchInProgress.value = false
+            }
+
+        }
+
     }
 }
