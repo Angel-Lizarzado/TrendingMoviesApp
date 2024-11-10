@@ -81,7 +81,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation("androidx.compose.material:material:1.5.0") // para que funcione varias propiedades de Jetpack Compose
-
+    implementation ("io.coil-kt:coil-compose:2.3.0")
 
 
 
